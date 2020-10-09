@@ -7,7 +7,7 @@ youtube.setKey(process.env.YoutubeNode_API_ABEMA);
 
 // 流用時の変更箇所
 // Mリーグ のコピー
-const ChannelID = 'm-league'; // 取得したいチャンネルIDを入れる
+const ChannelID = 'UCBHvzjvii3kp4gd_gw6UEIA'; // 取得したいチャンネルIDを入れる
 let SheetID = process.env.RPA_Senden_SheetID; //RPA管理シートID
 const SheetName = 'Mリーグ';
 //
@@ -18,8 +18,7 @@ let pagetoken = ''; //50件以上検索するためのページトークン
 const SheetDay = moment().format('D'); // スプシに貼り付ける日付を取得
 let YoutubeDay = moment().subtract(2, 'days').format('YYYY-MM-DD'); // 昨日を取得
 console.log(SheetDay, '日');
-const TodayDate = moment().subtract(1, 'days').format('YYYY/MM/DD'); // 昨日の日付を取得
-
+let TodayDate = moment().subtract(1, 'days').format('YYYY/MM/DD'); // 昨日の日付を取得
 // 貼り付ける列
 const SheetColmun = {
   '1': 'S',
@@ -119,6 +118,13 @@ async function test() {
     tokenType: 'Bearer',
     expiryDate: parseInt(process.env.GOOGLE_EXPIRY_DATE, 10),
   });
+  // RPA管理スプシから集計用シートIDを取得
+  const sheetdata = await RPA.Google.Spreadsheet.getValues({
+    spreadsheetId: SheetID,
+    range: `宣伝(YoutubeTwiiter)RPA管理シート!P3:P3`,
+  });
+  SheetID = sheetdata[0][0];
+  console.log(SheetID, SheetName);
 
   let SheetData = await RPA.Google.Spreadsheet.getValues({
     spreadsheetId: SheetID,
@@ -184,18 +190,7 @@ async function test() {
   let Day = moment().subtract(1, 'month').format('YYYY-MM');
   Day = Day + String('-01');
   YoutubeDay = Day;
-  await RPA.Google.authorize({
-    //accessToken: process.env.GOOGLE_ACCESS_TOKEN,
-    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-    tokenType: 'Bearer',
-    expiryDate: parseInt(process.env.GOOGLE_EXPIRY_DATE, 10),
-  });
-  // RPA管理スプシから集計用シートIDを取得
-  const sheetdata = await RPA.Google.Spreadsheet.getValues({
-    spreadsheetId: SheetID,
-    range: `宣伝(YoutubeTwiiter)RPA管理シート!P3:P3`,
-  });
-  SheetID = sheetdata[0][0];
+
   await Start();
   await RPA.sleep(2000);
   await Start();
