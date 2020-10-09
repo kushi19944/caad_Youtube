@@ -7,7 +7,7 @@ youtube.setKey(process.env.YoutubeNode_API_CAAD);
 
 // 流用時の変更箇所
 // Mリーグ のコピー
-const ChannelID = 'm-league'; // 取得したいチャンネルIDを入れる
+const ChannelID = 'UCBHvzjvii3kp4gd_gw6UEIA'; // 取得したいチャンネルIDを入れる
 let SheetID = process.env.RPA_Senden_SheetID; //RPA管理シートID
 const SheetName = 'Mリーグ';
 //
