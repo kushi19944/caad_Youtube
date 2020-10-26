@@ -6,8 +6,8 @@ var youtube = new Youtube();
 youtube.setKey(process.env.YoutubeNode_API_CAAD);
 
 // 流用時の変更箇所
-// news枠_先月
-const ChannelID = 'UCk5a240pQsTVT9CWPnTyIJw'; // 取得したいチャンネルIDを入れる
+// news特集枠_先月
+const ChannelID = 'UCB1dgsqLiEp57oDAyNV_vww'; // 取得したいチャンネルIDを入れる
 let SheetID = process.env.RPA_Senden_SheetID; //RPA管理シートID
 const SheetName = 'News';
 //
@@ -34,7 +34,7 @@ async function Start() {
   youtube.addParam('order', 'date');
   youtube.addParam('type', 'video');
   youtube.addParam('regionCode', 'JP');
-  //youtube.addParam('publishedAfter', `${YoutubeDay}T00:00:00Z`); // 今月のみの動画情報を取得する
+  youtube.addParam('publishedAfter', `${YoutubeDay}T00:00:00Z`); // 今月のみの動画情報を取得する
   youtube.addParam('channelId', ChannelID);
   youtube.addParam('pageToken', pagetoken); // ページトークンを追加することで50件以上前のデータも取得できる
 
@@ -79,7 +79,6 @@ async function test() {
   let Day = moment().subtract(1, 'month').format('YYYY-MM');
   Day = Day + String('-01');
   YoutubeDay = Day;
-  console.log(YoutubeDay);
   await RPA.Google.authorize({
     //accessToken: process.env.GOOGLE_ACCESS_TOKEN,
     refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
@@ -94,10 +93,14 @@ async function test() {
   SheetID = sheetdata[0][0];
   await Start();
   await RPA.sleep(2000);
-  await Start(); // 50件以上検索するためもう一度
+  await Start();
   await RPA.sleep(2000);
   await Start(); // 100件以上検索するためもう一度
   await RPA.sleep(2000);
+  //console.log(YoutubeData);
+  for (let i in YoutubeData){
+    console.log(YoutubeData[i])
+  }
   await JudgeColumn(); // 貼り付ける列を検索する
 
   // スプシからタイトルを取得
