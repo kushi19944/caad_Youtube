@@ -95,10 +95,14 @@ async function test() {
   await RPA.sleep(2000);
   await Start();
   await RPA.sleep(2000);
-  await Start(); // 100件以上検索するためもう一度
+  await Start();
+  await RPA.sleep(2000);
+  await Start(); // 200件以上検索するためもう一度
   await RPA.sleep(2000);
   //console.log(YoutubeData);
-  console.log(YoutubeData.length);
+  for (let i in YoutubeData) {
+    console.log(YoutubeData[i]);
+  }
   await JudgeColumn(); // 貼り付ける列を検索する
 
   // スプシからタイトルを取得
