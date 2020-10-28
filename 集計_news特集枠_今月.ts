@@ -67,7 +67,7 @@ async function Start() {
   var items;
   var item;
   youtube.addParam('order', 'date');
-  youtube.addParam('type', 'video');
+  //youtube.addParam('type', 'channel');
   youtube.addParam('regionCode', 'JP');
   youtube.addParam('publishedAfter', `${YoutubeDay}T00:00:00Z`); // 今月のみの動画情報を取得する
   youtube.addParam('channelId', ChannelID);
@@ -95,7 +95,10 @@ async function Start() {
       UploadDay = UploadDay.split('T')[0]; // Tの文字列で区切る
       UploadDay = UploadDay.replace(/-/g, '/'); // ハイフンを全てスラッシュに変更
       Data['publishedAt'] = UploadDay;
-      YoutubeData.push(Data);
+      if (Data['id'] != null) {
+        // VideoIDがきちんとある場合のみ配列に入れる
+        YoutubeData.push(Data);
+      }
     }
   });
 }
