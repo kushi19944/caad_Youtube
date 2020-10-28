@@ -58,7 +58,10 @@ async function Start() {
       UploadDay = UploadDay.split('T')[0]; // Tの文字列で区切る
       UploadDay = UploadDay.replace(/-/g, '/'); // ハイフンを全てスラッシュに変更
       Data['publishedAt'] = UploadDay;
-      YoutubeData.push(Data);
+      if (Data['id'] != null) {
+        // VideoIDがきちんとある場合のみ配列に入れる
+        YoutubeData.push(Data);
+      }
     }
   });
 }
