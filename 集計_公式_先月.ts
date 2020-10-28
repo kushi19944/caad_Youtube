@@ -58,7 +58,10 @@ async function Start() {
       UploadDay = UploadDay.split('T')[0]; // Tの文字列で区切る
       UploadDay = UploadDay.replace(/-/g, '/'); // ハイフンを全てスラッシュに変更
       Data['publishedAt'] = UploadDay;
-      YoutubeData.push(Data);
+      if (Data['id'] != null) {
+        // VideoIDがきちんとある場合のみ配列に入れる
+        YoutubeData.push(Data);
+      }
     }
   });
 }
@@ -105,8 +108,8 @@ async function test() {
   await RPA.sleep(2000);
   await Start(); // 100件以上検索するためもう一度
   await RPA.sleep(2000);
-  for (let i in YoutubeData){
-    console.log(YoutubeData[i])
+  for (let i in YoutubeData) {
+    console.log(YoutubeData[i]);
   }
   //console.log(YoutubeData);
   await JudgeColumn(); // 貼り付ける列を検索する
